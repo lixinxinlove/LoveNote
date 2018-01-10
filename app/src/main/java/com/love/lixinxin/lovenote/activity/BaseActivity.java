@@ -15,7 +15,7 @@ import com.love.lixinxin.lovenote.exception.AppManager;
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String TAG = getClass().getName();
+    protected final String TAG = getClass().getName();
 
     @LayoutRes
     protected abstract int getLayoutRes();

@@ -11,8 +11,44 @@ import android.arch.persistence.room.PrimaryKey;
 public class Note {
 
     @PrimaryKey/*(autoGenerate = true)*/
-    public int id;
+    private  int id;
 
-    public String text;
+    private String text;
 
+    private long timeStamp;
+
+    private int bgType;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public int getBgType() {
+        return bgType;
+    }
+
+    public void setBgType(int bgType) {
+        this.bgType = bgType;
+    }
 }
