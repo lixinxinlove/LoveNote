@@ -96,3 +96,5 @@ out
 build.xml
 
 proguard-project.txt
+
+*.jks

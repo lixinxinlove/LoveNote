@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bar_height">
 
@@ -34,16 +35,37 @@
     </RelativeLayout>
 
 
+    <ScrollView
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <EditText
+            android:lineSpacingMultiplier="1.5"
+            android:layout_margin="@dimen/margin_default"
+            android:hint="lllllllll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
+
+    </ScrollView>
+
     <LinearLayout
+        android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bar_height"
         android:layout_alignParentBottom="true">
 
+        <ImageButton style="@style/edit_bottom_image_button"
+            android:src="@mipmap/ic_launcher"/>
 
         <ImageButton style="@style/edit_bottom_image_button" />
 
         <ImageButton style="@style/edit_bottom_image_button" />
 
+        <ImageButton style="@style/edit_bottom_image_button" />
 
     </LinearLayout>
 

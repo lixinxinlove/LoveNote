@@ -1,5 +1,6 @@
 package com.love.lixinxin.lovenote.activity;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -42,17 +43,6 @@ public class HomeActivity extends BaseActivity {
         return R.layout.activity_home;
     }
 
-    @Override
-    protected void findView() {
-        mRecyclerView = findViewById(R.id.rv_home);
-        ivAdd = findViewById(R.id.iv_add);
-        ivAdd.setOutlineProvider(new MyViewOutlineProvider());
-    }
-
-    @Override
-    protected void setListener() {
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +68,32 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    protected void findView() {
+        mRecyclerView = findViewById(R.id.rv_home);
+        ivAdd = findViewById(R.id.iv_add);
+        ivAdd.setOutlineProvider(new MyViewOutlineProvider());
+    }
+
+    @Override
+    protected void setListener() {
+        ivAdd.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.iv_add:
+                Intent intent = new Intent(this, EditActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
+
     private void init() {
         mData = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
@@ -88,11 +104,6 @@ public class HomeActivity extends BaseActivity {
     private void find() {
 
         Flowable.create((FlowableOnSubscribe<List<Note>>) e -> {
-
-
-
-
-
 
 
         }, BackpressureStrategy.BUFFER)

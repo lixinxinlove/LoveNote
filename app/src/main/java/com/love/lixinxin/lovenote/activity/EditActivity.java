@@ -21,6 +21,12 @@ public class EditActivity extends BaseActivity {
         return R.layout.activity_edit;
     }
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
     @Override
     protected void findView() {
 
@@ -30,13 +36,6 @@ public class EditActivity extends BaseActivity {
     protected void setListener() {
 
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
 
     private void save() {
         Flowable.create((FlowableOnSubscribe<Note>) e -> e.onNext(new Note()), BackpressureStrategy.BUFFER)
