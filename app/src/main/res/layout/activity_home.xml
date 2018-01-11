@@ -40,10 +40,12 @@
 
 
         <ImageView
+            android:padding="2dp"
+            android:background="@color/colorAccent"
             android:id="@+id/iv_add"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/add_center_x" />
 
 
     </RelativeLayout>
