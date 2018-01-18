@@ -42,13 +42,16 @@
         android:layout_height="match_parent"
         android:scrollbars="none">
 
-        <EditText
+
+        <com.love.lixinxin.lovenote.appwidget.NoteEditText
+            android:id="@+id/et_note"
             android:lineSpacingMultiplier="1.5"
             android:layout_margin="@dimen/margin_default"
             android:hint="lllllllll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent" />
+
 
     </ScrollView>
 

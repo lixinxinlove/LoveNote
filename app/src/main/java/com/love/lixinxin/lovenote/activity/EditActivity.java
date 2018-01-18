@@ -3,6 +3,7 @@ package com.love.lixinxin.lovenote.activity;
 import android.os.Bundle;
 
 import com.love.lixinxin.lovenote.R;
+import com.love.lixinxin.lovenote.appwidget.NoteEditText;
 import com.love.lixinxin.lovenote.data.entity.Note;
 
 import org.reactivestreams.Subscriber;
@@ -16,6 +17,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditActivity extends BaseActivity {
 
+
+    private NoteEditText mEditText;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_edit;
@@ -27,6 +31,7 @@ public class EditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     protected void findView() {
 
