@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.appwidget.NoteEditText;
 import com.love.lixinxin.lovenote.data.entity.Note;
+import com.love.lixinxin.lovenote.manager.NoteManger;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -17,6 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditActivity extends BaseActivity {
 
+    private NoteManger mNoteManger;
 
     private NoteEditText mEditText;
 
@@ -29,7 +31,7 @@ public class EditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mNoteManger=new NoteManger();
     }
 
     @Override
