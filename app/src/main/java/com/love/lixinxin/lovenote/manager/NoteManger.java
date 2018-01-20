@@ -13,7 +13,7 @@ import java.util.List;
 public class NoteManger {
 
     //最大保存条数
-    private static final int MAX = 10;
+    private static final int MAX = 40;
     //存储 10 条记录
     private List<Option> mOptions = new ArrayList<>(MAX);
 

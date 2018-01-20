@@ -55,22 +55,31 @@
 
     </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bar_height"
         android:layout_alignParentBottom="true">
 
-        <ImageButton style="@style/edit_bottom_image_button"
-            android:src="@mipmap/ic_launcher"/>
 
-        <ImageButton style="@style/edit_bottom_image_button" />
 
-        <ImageButton style="@style/edit_bottom_image_button" />
+        <Button
+            android:id="@+id/btn_revoke"
+            android:text="撤销"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        <ImageButton style="@style/edit_bottom_image_button" />
 
-    </LinearLayout>
+        <Button
+            android:layout_alignParentRight="true"
+            android:id="@+id/btn_redo"
+            android:text="重做"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

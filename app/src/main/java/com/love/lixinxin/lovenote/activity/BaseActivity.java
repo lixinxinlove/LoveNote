@@ -1,5 +1,6 @@
 package com.love.lixinxin.lovenote.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     protected final String TAG = getClass().getName();
 
+    protected Context mContext;
+
     @LayoutRes
     protected abstract int getLayoutRes();
 
@@ -27,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(getLayoutRes());
         AppManager.getAppManager().addActivity(this);
         findView();
