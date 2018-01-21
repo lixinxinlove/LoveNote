@@ -17,12 +17,11 @@ import java.util.List;
 public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
 
     public NoteListAdapter(@Nullable List<Note> data) {
-
         super(R.layout.item_note, data);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, Note note) {
-
+        helper.setText(R.id.tv_note_item, note.getText()+"lee");
     }
 }

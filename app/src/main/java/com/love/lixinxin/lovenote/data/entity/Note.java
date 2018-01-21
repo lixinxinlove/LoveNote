@@ -10,7 +10,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "note")
 public class Note {
 
-    @PrimaryKey/*(autoGenerate = true)*/
+    @PrimaryKey
     private  int id;
 
     private String text;
@@ -18,7 +18,6 @@ public class Note {
     private long timeStamp;
 
     private int bgType;
-
 
     public int getId() {
         return id;

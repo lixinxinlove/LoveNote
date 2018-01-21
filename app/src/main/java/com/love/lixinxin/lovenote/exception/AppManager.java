@@ -2,7 +2,6 @@ package com.love.lixinxin.lovenote.exception;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class AppManager {
             activityStack = new ArrayList<>();
         }
         activityStack.add(activity);
-        Log.e(TAG, "添加Activity");
+      //  Log.e(TAG, "添加Activity");
     }
 
     /**
@@ -44,7 +43,7 @@ public class AppManager {
     public void remoreActivity(Activity activity) {
         if (activityStack != null) {
             activityStack.remove(activity);
-            Log.e(TAG, "移除Activity");
+          //  Log.e(TAG, "移除Activity");
         }
     }
 

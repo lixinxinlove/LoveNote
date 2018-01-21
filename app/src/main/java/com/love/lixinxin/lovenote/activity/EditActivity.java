@@ -1,7 +1,6 @@
 package com.love.lixinxin.lovenote.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -9,12 +8,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.love.lixinxin.lovenote.R;
+import com.love.lixinxin.lovenote.app.App;
 import com.love.lixinxin.lovenote.appwidget.NoteEditText;
+import com.love.lixinxin.lovenote.data.dao.NoteDao;
 import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.manager.NoteManger;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+
+import java.util.Date;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -33,9 +36,7 @@ public class EditActivity extends BaseActivity {
 
     private NoteEditText mEditText;
 
-    private Handler mHandler;
-
-    private String mText = "";
+    NoteDao noteDao;
 
     @Override
     protected int getLayoutRes() {
@@ -46,7 +47,7 @@ public class EditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNoteManger = new NoteManger();
-        mHandler = new Handler();
+        noteDao = App.db.noteDao();
     }
 
     @Override
@@ -69,10 +70,11 @@ public class EditActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.btn_revoke:
-                mEditText.restore(mNoteManger.getPrevOption());
+                save();
+              //  mEditText.restore(mNoteManger.getPrevOption());
                 break;
             case R.id.btn_redo:
-                mEditText.restore(mNoteManger.getNextOption());
+               // mEditText.restore(mNoteManger.getNextOption());
                 break;
         }
     }
@@ -91,19 +93,22 @@ public class EditActivity extends BaseActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            mHandler.postDelayed(() -> {
-                if (!mText.equals(s.toString())) {
-                    mNoteManger.saveOption(mEditText.createOption());
-                    Toast.makeText(mContext, "save", Toast.LENGTH_SHORT).show();
-                }
-                mText = s.toString();
-            }, 1000);
         }
     };
 
 
     private void save() {
-        Flowable.create((FlowableOnSubscribe<Note>) e -> e.onNext(new Note()), BackpressureStrategy.BUFFER)
+        Flowable
+                .create((FlowableOnSubscribe<Note>) e -> {
+                    Note note = new Note();
+                    note.setBgType(0);
+                    Date date = new Date();
+                    note.setTimeStamp(date.getTime());
+                    note.setText(mEditText.getText().toString());
+                    App.noteDao.insertNote(note);
+                    e.onNext(note);
+                    e.onComplete();
+                }, BackpressureStrategy.BUFFER)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Note>() {
@@ -115,6 +120,9 @@ public class EditActivity extends BaseActivity {
                     @Override
                     public void onNext(Note note) {
 
+                        if (note != null) {
+                            Toast.makeText(mContext, "save", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -127,6 +135,13 @@ public class EditActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
 }

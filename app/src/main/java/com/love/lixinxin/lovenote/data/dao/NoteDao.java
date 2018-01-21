@@ -9,12 +9,13 @@ import android.arch.persistence.room.Update;
 
 import com.love.lixinxin.lovenote.data.entity.Note;
 
+import java.util.List;
+
 /**
  * Created by lixinxin on 2018/1/7.
  */
 @Dao
 public interface NoteDao {
-
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(Note... notes);
@@ -26,11 +27,10 @@ public interface NoteDao {
     int updateNote(Note... notes);
 
     @Query("SELECT * FROM note")
-    Note[] query();
+    List<Note> query();
 
     @Query("SELECT * FROM note WHERE id = :id")
-    Note[] queryUid(int id);
-
+    List<Note>  queryId(int id);
 
 
 }

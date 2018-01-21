@@ -3,6 +3,7 @@ package com.love.lixinxin.lovenote.app;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
+import com.love.lixinxin.lovenote.data.dao.NoteDao;
 import com.love.lixinxin.lovenote.db.AppDataBase;
 
 /**
@@ -11,15 +12,16 @@ import com.love.lixinxin.lovenote.db.AppDataBase;
 
 public class App extends Application {
 
-
     public static AppDataBase db;
+
+    public static NoteDao noteDao;
 
     @Override
     public void onCreate() {
         super.onCreate();
-         /*.addMigrations(MIGRATION_1_2,MIGRATION_2_3)*/
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDataBase.class, "database-name").fallbackToDestructiveMigration().build();
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDataBase.class, "database-note").fallbackToDestructiveMigration().build();
+        noteDao = db.noteDao();
 
     }
 }

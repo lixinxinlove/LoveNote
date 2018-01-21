@@ -10,24 +10,19 @@ import android.widget.ImageView;
 
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.adapter.NoteListAdapter;
+import com.love.lixinxin.lovenote.app.App;
 import com.love.lixinxin.lovenote.appwidget.MyViewOutlineProvider;
 import com.love.lixinxin.lovenote.data.entity.Note;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
 public class HomeActivity extends BaseActivity {
-
 
     private ImageView ivAdd;
 
@@ -37,16 +32,13 @@ public class HomeActivity extends BaseActivity {
 
     private List<Note> mData;
 
-
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -60,13 +52,12 @@ public class HomeActivity extends BaseActivity {
                 } else {
                     outRect.set(5, 0, 10, 10);
                 }
-
             }
         });
-        init();
+
         mAdapter = new NoteListAdapter(mData);
         mRecyclerView.setAdapter(mAdapter);
-
+        query();
     }
 
 
@@ -95,43 +86,20 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-    private void init() {
-        mData = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            mData.add(new Note());
-        }
-    }
+    private void query() {
 
-    private void find() {
-
-        Flowable.create((FlowableOnSubscribe<List<Note>>) e -> {
-
-
-        }, BackpressureStrategy.BUFFER)
+        Observable
+                .create((ObservableOnSubscribe<List<Note>>) e -> {
+                    e.onNext(App.db.noteDao().query());
+                    e.onComplete();
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Note>>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<Note> notes) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
+                .subscribe(o -> {
+                    mData=o;
+                    mAdapter.replaceData(mData);
+                    mAdapter.notifyDataSetChanged();
                 });
     }
-
 
 }
