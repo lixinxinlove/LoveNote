@@ -7,13 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.adapter.NoteListAdapter;
 import com.love.lixinxin.lovenote.app.App;
 import com.love.lixinxin.lovenote.appwidget.MyViewOutlineProvider;
 import com.love.lixinxin.lovenote.data.entity.Note;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -22,7 +25,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+
+    private static final int ADD_REQUEST_CODE = 0;
+    private static final int EDIT_REQUEST_CODE = 1;
 
     private ImageView ivAdd;
 
@@ -31,6 +37,8 @@ public class HomeActivity extends BaseActivity {
     private NoteListAdapter mAdapter;
 
     private List<Note> mData;
+
+    private RelativeLayout mEmptyView;
 
     @Override
     protected int getLayoutRes() {
@@ -56,6 +64,7 @@ public class HomeActivity extends BaseActivity {
         });
 
         mAdapter = new NoteListAdapter(mData);
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         query();
     }
@@ -64,6 +73,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void findView() {
         mRecyclerView = findViewById(R.id.rv_home);
+        mEmptyView=findViewById(R.id.empty_view);
         ivAdd = findViewById(R.id.iv_add);
         ivAdd.setOutlineProvider(new MyViewOutlineProvider());
     }
@@ -79,10 +89,21 @@ public class HomeActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.iv_add:
                 Intent intent = new Intent(this, EditActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_REQUEST_CODE);
                 break;
             default:
                 break;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_REQUEST_CODE) {
+            query();
+        }else if (requestCode == EDIT_REQUEST_CODE){
+            query();
         }
     }
 
@@ -96,10 +117,21 @@ public class HomeActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    mData=o;
+                    mData = o;
                     mAdapter.replaceData(mData);
                     mAdapter.notifyDataSetChanged();
+                    if (mData==null || mData.size()==0){
+                        mEmptyView.setVisibility(View.VISIBLE);
+                    }else {
+                        mEmptyView.setVisibility(View.GONE);
+                    }
                 });
     }
 
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.putExtra("note", (Serializable) adapter.getItem(position));
+        startActivityForResult(intent, EDIT_REQUEST_CODE);
+    }
 }

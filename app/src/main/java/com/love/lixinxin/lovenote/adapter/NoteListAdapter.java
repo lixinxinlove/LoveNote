@@ -22,6 +22,6 @@ public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, Note note) {
-        helper.setText(R.id.tv_note_item, note.getText()+"lee");
+        helper.setText(R.id.tv_note_item, note.getText());
     }
 }

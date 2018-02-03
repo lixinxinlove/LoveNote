@@ -5,7 +5,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.app.App;
@@ -13,6 +14,7 @@ import com.love.lixinxin.lovenote.appwidget.NoteEditText;
 import com.love.lixinxin.lovenote.data.dao.NoteDao;
 import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.manager.NoteManger;
+import com.love.lixinxin.lovenote.utils.StringUtils;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -27,6 +29,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditActivity extends BaseActivity {
 
+    private ImageButton ibBack;
+
+    private ImageButton ibDelete;
+
+    private TextView tvSave;
     //撤销
     private Button btnRevoke;
     //
@@ -36,7 +43,9 @@ public class EditActivity extends BaseActivity {
 
     private NoteEditText mEditText;
 
-    NoteDao noteDao;
+    private NoteDao noteDao;
+
+    private Note mNote;
 
     @Override
     protected int getLayoutRes() {
@@ -46,12 +55,33 @@ public class EditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mNote = (Note) getIntent().getSerializableExtra("note");
+        if (mNote == null) {
+            mNote = new Note();
+            mNote.setCreateTime(new Date().getTime());
+        }
+
         mNoteManger = new NoteManger();
         noteDao = App.db.noteDao();
+
+
+        setUpView();
+    }
+
+    private void setUpView() {
+        if (StringUtils.isNotNull(mNote.getText())){
+            mEditText.setText(mNote.getText());
+            mEditText.setSelection(mNote.getText().length());
+        }
+
     }
 
     @Override
     protected void findView() {
+        ibBack = findViewById(R.id.ib_back);
+        ibDelete = findViewById(R.id.ib_delete);
+        tvSave = findViewById(R.id.tv_save);
         mEditText = findViewById(R.id.et_note);
         btnRevoke = findViewById(R.id.btn_revoke);
         btnRedo = findViewById(R.id.btn_redo);
@@ -59,6 +89,9 @@ public class EditActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
+        ibBack.setOnClickListener(this);
+        ibDelete.setOnClickListener(this);
+        tvSave.setOnClickListener(this);
         btnRevoke.setOnClickListener(this);
         btnRedo.setOnClickListener(this);
         mEditText.addTextChangedListener(textWatcher);
@@ -69,15 +102,24 @@ public class EditActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.btn_revoke:
+            case R.id.ib_back:
+                finish();
+                break;
+            case R.id.tv_save:
                 save();
-              //  mEditText.restore(mNoteManger.getPrevOption());
+                break;
+                case R.id.ib_delete:
+                delete();
+                break;
+            case R.id.btn_revoke:
+                //  mEditText.restore(mNoteManger.getPrevOption());
                 break;
             case R.id.btn_redo:
-               // mEditText.restore(mNoteManger.getNextOption());
+                // mEditText.restore(mNoteManger.getNextOption());
                 break;
         }
     }
+
 
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -97,42 +139,76 @@ public class EditActivity extends BaseActivity {
     };
 
 
+    /**
+     * 保存
+     */
     private void save() {
         Flowable
                 .create((FlowableOnSubscribe<Note>) e -> {
-                    Note note = new Note();
-                    note.setBgType(0);
+                    mNote.setBgType(0);
                     Date date = new Date();
-                    note.setTimeStamp(date.getTime());
-                    note.setText(mEditText.getText().toString());
-                    App.noteDao.insertNote(note);
-                    e.onNext(note);
+                    mNote.setUpdateTime(date.getTime());
+                    mNote.setText(mEditText.getText().toString());
+                    App.noteDao.insertNote(mNote);
+                    e.onNext(mNote);
                     e.onComplete();
-                }, BackpressureStrategy.BUFFER)
+                }, BackpressureStrategy.LATEST)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Note>() {
                     @Override
                     public void onSubscribe(Subscription s) {
-
+                        s.request(Integer.MAX_VALUE);
                     }
 
                     @Override
                     public void onNext(Note note) {
-
-                        if (note != null) {
-                            Toast.makeText(mContext, "save", Toast.LENGTH_SHORT).show();
-                        }
                     }
 
                     @Override
                     public void onError(Throwable t) {
+                    }
+                    @Override
+                    public void onComplete() {
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                });
+    }  /**
+     * 保存
+     */
+    private void delete() {
+        Flowable
+                .create((FlowableOnSubscribe<Note>) e -> {
+               if (mNote.getId()>0){
+                   App.noteDao.deleteNote(mNote);
+                   e.onNext(mNote);
+                   e.onComplete();
+               }else {
+                   e.onError(null);
+                   e.onComplete();
+               }
 
+                }, BackpressureStrategy.LATEST)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Note>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        s.request(Integer.MAX_VALUE);
                     }
 
                     @Override
-                    public void onComplete() {
+                    public void onNext(Note note) {
+                    }
 
+                    @Override
+                    public void onError(Throwable t) {
+                    }
+                    @Override
+                    public void onComplete() {
+                        setResult(RESULT_OK);
+                        finish();
                     }
                 });
     }
@@ -141,7 +217,6 @@ public class EditActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
 }
