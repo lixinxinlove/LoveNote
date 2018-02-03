@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:constantSize="false">
+
+    <item android:state_pressed="true">
+        <bitmap android:antialias="true"
+            android:src="@mipmap/ic_search_normal"
+            android:tint="#cccccc"
+            android:tintMode="src_atop" />
+    </item>
+
+    <item android:drawable="@mipmap/ic_search_normal" />
+
+</selector>
