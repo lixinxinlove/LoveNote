@@ -9,7 +9,7 @@ import com.love.lixinxin.lovenote.data.entity.Note;
 /**
  * Created by lixinxin on 2018/1/7.
  */
-@Database(entities = {Note.class},version = 1)
+@Database(entities = {Note.class},version = 2)
 public abstract class AppDataBase extends RoomDatabase {
     public abstract NoteDao noteDao();
 }

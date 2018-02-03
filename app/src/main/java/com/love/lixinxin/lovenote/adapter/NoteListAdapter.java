@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.data.entity.Note;
+import com.love.lixinxin.lovenote.utils.DateTimeUtils;
 
 import java.util.List;
 
@@ -23,5 +24,6 @@ public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, Note note) {
         helper.setText(R.id.tv_note_item, note.getText());
+        helper.setText(R.id.tv_create_time, DateTimeUtils.timeForDate(note.getCreateTime(),DateTimeUtils.yyyy_MM_dd_HH_mm_ss));
     }
 }
