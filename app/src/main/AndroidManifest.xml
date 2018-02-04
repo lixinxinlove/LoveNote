@@ -27,8 +27,10 @@
         <activity
             android:name=".activity.EditActivity"
             android:windowSoftInputMode="adjustResize" />
-        <!--adjustResize 布局在软键盘的上面 -->
-        <activity android:name=".activity.HomeActivity"></activity>
+        <!-- adjustResize 布局在软键盘的上面 -->
+        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.ThemeActivity"/>
+
     </application>
 
 </manifest>

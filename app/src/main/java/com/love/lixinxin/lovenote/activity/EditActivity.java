@@ -1,11 +1,13 @@
 package com.love.lixinxin.lovenote.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.love.lixinxin.lovenote.R;
@@ -30,11 +32,17 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditActivity extends BaseActivity {
 
+    private static final int THEME_REQUEST_CODE = 1;
+
+    private LinearLayout llRoot;
+
     private TextView tvTime;
 
     private ImageButton ibBack;
 
     private ImageButton ibDelete;
+
+    private ImageButton ibPic;
 
     private TextView tvSave;
     //撤销
@@ -73,21 +81,23 @@ public class EditActivity extends BaseActivity {
     }
 
     private void setUpView() {
-        if (StringUtils.isNotNull(mNote.getText())){
+        if (StringUtils.isNotNull(mNote.getText())) {
             mEditText.setText(mNote.getText());
             mEditText.setSelection(mNote.getText().length());
         }
 
 
-        tvTime.setText(DateTimeUtils.timeForDate(mNote.getCreateTime(),DateTimeUtils.yyyy_Nian_MM_Yue_dd_Ri));
+        tvTime.setText(DateTimeUtils.timeForDate(mNote.getCreateTime(), DateTimeUtils.yyyy_Nian_MM_Yue_dd_Ri));
 
     }
 
     @Override
     protected void findView() {
-        tvTime=findViewById(R.id.tv_time);
+        llRoot = findViewById(R.id.ll_root);
+        tvTime = findViewById(R.id.tv_time);
         ibBack = findViewById(R.id.ib_back);
         ibDelete = findViewById(R.id.ib_delete);
+        ibPic = findViewById(R.id.ib_pic);
         tvSave = findViewById(R.id.tv_save);
         mEditText = findViewById(R.id.et_note);
         btnRevoke = findViewById(R.id.btn_revoke);
@@ -98,6 +108,7 @@ public class EditActivity extends BaseActivity {
     protected void setListener() {
         ibBack.setOnClickListener(this);
         ibDelete.setOnClickListener(this);
+        ibPic.setOnClickListener(this);
         tvSave.setOnClickListener(this);
         btnRevoke.setOnClickListener(this);
         btnRedo.setOnClickListener(this);
@@ -115,8 +126,12 @@ public class EditActivity extends BaseActivity {
             case R.id.tv_save:
                 save();
                 break;
-                case R.id.ib_delete:
+            case R.id.ib_delete:
                 delete();
+                break;
+
+            case R.id.ib_pic:
+                startActivityForResult(new Intent(this, ThemeActivity.class), THEME_REQUEST_CODE);
                 break;
             case R.id.btn_revoke:
                 //  mEditText.restore(mNoteManger.getPrevOption());
@@ -128,6 +143,15 @@ public class EditActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK  && requestCode==THEME_REQUEST_CODE){
+
+        }
+
+
+    }
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -175,26 +199,29 @@ public class EditActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable t) {
                     }
+
                     @Override
                     public void onComplete() {
                         setResult(RESULT_OK);
                         finish();
                     }
                 });
-    }  /**
+    }
+
+    /**
      * 保存
      */
     private void delete() {
         Flowable
                 .create((FlowableOnSubscribe<Note>) e -> {
-               if (mNote.getId()>0){
-                   App.noteDao.deleteNote(mNote);
-                   e.onNext(mNote);
-                   e.onComplete();
-               }else {
-                   e.onError(null);
-                   e.onComplete();
-               }
+                    if (mNote.getId() > 0) {
+                        App.noteDao.deleteNote(mNote);
+                        e.onNext(mNote);
+                        e.onComplete();
+                    } else {
+                        e.onError(null);
+                        e.onComplete();
+                    }
 
                 }, BackpressureStrategy.LATEST)
                 .subscribeOn(Schedulers.io())
@@ -212,6 +239,7 @@ public class EditActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable t) {
                     }
+
                     @Override
                     public void onComplete() {
                         setResult(RESULT_OK);
