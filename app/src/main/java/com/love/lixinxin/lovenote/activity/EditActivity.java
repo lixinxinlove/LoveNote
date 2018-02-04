@@ -14,6 +14,7 @@ import com.love.lixinxin.lovenote.appwidget.NoteEditText;
 import com.love.lixinxin.lovenote.data.dao.NoteDao;
 import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.manager.NoteManger;
+import com.love.lixinxin.lovenote.utils.DateTimeUtils;
 import com.love.lixinxin.lovenote.utils.StringUtils;
 
 import org.reactivestreams.Subscriber;
@@ -28,6 +29,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditActivity extends BaseActivity {
+
+    private TextView tvTime;
 
     private ImageButton ibBack;
 
@@ -75,10 +78,14 @@ public class EditActivity extends BaseActivity {
             mEditText.setSelection(mNote.getText().length());
         }
 
+
+        tvTime.setText(DateTimeUtils.timeForDate(mNote.getCreateTime(),DateTimeUtils.yyyy_Nian_MM_Yue_dd_Ri));
+
     }
 
     @Override
     protected void findView() {
+        tvTime=findViewById(R.id.tv_time);
         ibBack = findViewById(R.id.ib_back);
         ibDelete = findViewById(R.id.ib_delete);
         tvSave = findViewById(R.id.tv_save);
