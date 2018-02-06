@@ -25,5 +25,6 @@ public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, Note note) {
         helper.setText(R.id.tv_note_item, note.getText());
         helper.setText(R.id.tv_create_time, DateTimeUtils.timeForDate(note.getCreateTime(),DateTimeUtils.yyyy_MM_dd_HH_mm_ss));
+        helper.setBackgroundRes(R.id.rl_item_view_root ,R.mipmap.bg_1);
     }
 }

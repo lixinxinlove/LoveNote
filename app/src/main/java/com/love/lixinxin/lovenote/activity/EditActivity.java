@@ -146,7 +146,7 @@ public class EditActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK  && requestCode==THEME_REQUEST_CODE){
+        if (resultCode == RESULT_OK && requestCode == THEME_REQUEST_CODE) {
 
         }
 
@@ -174,6 +174,11 @@ public class EditActivity extends BaseActivity {
      * 保存
      */
     private void save() {
+
+        if (mEditText.getText().length() == 0) {
+            return;
+        }
+
         Flowable
                 .create((FlowableOnSubscribe<Note>) e -> {
                     mNote.setBgType(0);
