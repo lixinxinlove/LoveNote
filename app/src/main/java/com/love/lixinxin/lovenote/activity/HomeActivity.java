@@ -3,6 +3,7 @@ package com.love.lixinxin.lovenote.activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -31,6 +32,8 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     private static final int EDIT_REQUEST_CODE = 1;
 
     private ImageView ivAdd;
+
+    private FloatingActionButton fABAdd;
 
     private RecyclerView mRecyclerView;
 
@@ -73,14 +76,16 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     @Override
     protected void findView() {
         mRecyclerView = findViewById(R.id.rv_home);
-        mEmptyView=findViewById(R.id.empty_view);
+        mEmptyView = findViewById(R.id.empty_view);
         ivAdd = findViewById(R.id.iv_add);
+        fABAdd=findViewById(R.id.fab_add);
         ivAdd.setOutlineProvider(new MyViewOutlineProvider());
     }
 
     @Override
     protected void setListener() {
         ivAdd.setOnClickListener(this);
+        fABAdd.setOnClickListener(this);
     }
 
     @Override
@@ -90,6 +95,10 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
             case R.id.iv_add:
                 Intent intent = new Intent(this, EditActivity.class);
                 startActivityForResult(intent, ADD_REQUEST_CODE);
+                break;
+            case R.id.fab_add:
+                Intent intent1 = new Intent(this, EditActivity.class);
+                startActivityForResult(intent1, ADD_REQUEST_CODE);
                 break;
             default:
                 break;
@@ -102,7 +111,7 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_REQUEST_CODE) {
             query();
-        }else if (requestCode == EDIT_REQUEST_CODE){
+        } else if (requestCode == EDIT_REQUEST_CODE) {
             query();
         }
     }
@@ -120,9 +129,9 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
                     mData = o;
                     mAdapter.replaceData(mData);
                     mAdapter.notifyDataSetChanged();
-                    if (mData==null || mData.size()==0){
+                    if (mData == null || mData.size() == 0) {
                         mEmptyView.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         mEmptyView.setVisibility(View.GONE);
                     }
                 });

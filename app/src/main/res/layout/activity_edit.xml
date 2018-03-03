@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:background="@mipmap/bg_1"
     android:id="@+id/ll_root"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_1"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/top_bar"
@@ -25,8 +25,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/ib_back"
-            android:text="时间"
-            android:visibility="invisible" />
+            android:text="时间" />
 
         <TextView
             android:id="@+id/tv_save"
@@ -43,18 +42,17 @@
 
     <View
         android:id="@+id/top_line"
-        android:layout_below="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#cccccc"
-        />
+        android:layout_below="@+id/top_bar"
+        android:background="#cccccc" />
 
     <ScrollView
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@+id/ll_mean"
         android:layout_below="@+id/top_line"
+        android:layout_weight="1"
         android:scrollbars="none">
 
 
@@ -64,13 +62,13 @@
             android:orientation="vertical">
 
             <com.love.lixinxin.lovenote.appwidget.NoteEditText
-                android:gravity="start"
                 android:id="@+id/et_note"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/margin_default"
                 android:background="@android:color/transparent"
                 android:focusable="true"
+                android:gravity="start"
                 android:hint="记录一些好心情吧！"
                 android:lineSpacingMultiplier="1.5"
                 android:minLines="6" />
@@ -89,37 +87,37 @@
         android:gravity="center_vertical">
 
         <ImageButton
-            android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:padding="5dp"
             android:src="@drawable/selector_share" />
 
         <ImageButton
             android:id="@+id/ib_pic"
-            android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:padding="5dp"
             android:src="@drawable/selector_pic" />
 
         <ImageButton
-            android:padding="10dp"
             android:id="@+id/ib_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:padding="10dp"
             android:src="@drawable/selector_delete" />
 
         <ImageButton
-            android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:padding="5dp"
             android:src="@drawable/selector_copy" />
 
     </LinearLayout>
