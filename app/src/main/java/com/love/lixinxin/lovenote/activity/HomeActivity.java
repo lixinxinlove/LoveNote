@@ -16,6 +16,7 @@ import com.love.lixinxin.lovenote.adapter.NoteListAdapter;
 import com.love.lixinxin.lovenote.app.App;
 import com.love.lixinxin.lovenote.appwidget.MyViewOutlineProvider;
 import com.love.lixinxin.lovenote.data.entity.Note;
+import com.love.lixinxin.lovenote.dialog.ThemeDialogFragment;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,6 +43,10 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     private List<Note> mData;
 
     private RelativeLayout mEmptyView;
+
+
+
+    private ThemeDialogFragment themeDialogFragment;
 
     @Override
     protected int getLayoutRes() {

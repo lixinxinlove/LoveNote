@@ -15,6 +15,7 @@ import com.love.lixinxin.lovenote.app.App;
 import com.love.lixinxin.lovenote.appwidget.NoteEditText;
 import com.love.lixinxin.lovenote.data.dao.NoteDao;
 import com.love.lixinxin.lovenote.data.entity.Note;
+import com.love.lixinxin.lovenote.dialog.ThemeDialogFragment;
 import com.love.lixinxin.lovenote.manager.NoteManger;
 import com.love.lixinxin.lovenote.utils.DateTimeUtils;
 import com.love.lixinxin.lovenote.utils.StringUtils;
@@ -39,6 +40,8 @@ public class EditActivity extends BaseActivity {
     private TextView tvTime;
 
     private ImageButton ibBack;
+
+    private ImageButton ibShear;
 
     private ImageButton ibDelete;
 
@@ -97,6 +100,7 @@ public class EditActivity extends BaseActivity {
         tvTime = findViewById(R.id.tv_time);
         ibBack = findViewById(R.id.ib_back);
         ibDelete = findViewById(R.id.ib_delete);
+        ibShear = findViewById(R.id.ib_shear);
         ibPic = findViewById(R.id.ib_pic);
         tvSave = findViewById(R.id.tv_save);
         mEditText = findViewById(R.id.et_note);
@@ -107,6 +111,7 @@ public class EditActivity extends BaseActivity {
     @Override
     protected void setListener() {
         ibBack.setOnClickListener(this);
+        ibShear.setOnClickListener(this);
         ibDelete.setOnClickListener(this);
         ibPic.setOnClickListener(this);
         tvSave.setOnClickListener(this);
@@ -126,6 +131,9 @@ public class EditActivity extends BaseActivity {
             case R.id.tv_save:
                 save();
                 break;
+            case R.id.ib_shear:
+                selectTheme();
+                break;
             case R.id.ib_delete:
                 delete();
                 break;
@@ -140,6 +148,11 @@ public class EditActivity extends BaseActivity {
                 // mEditText.restore(mNoteManger.getNextOption());
                 break;
         }
+    }
+
+    private void selectTheme() {
+        ThemeDialogFragment themeDialogFragment=new ThemeDialogFragment();
+        themeDialogFragment.show(getSupportFragmentManager(),"lee");
     }
 
 
