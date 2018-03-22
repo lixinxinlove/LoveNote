@@ -1,12 +1,12 @@
 package com.love.lixinxin.lovenote.activity;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.love.lixinxin.lovenote.R;
@@ -83,13 +83,16 @@ public class ThemeActivity extends BaseActivity implements BaseQuickAdapter.OnIt
 
     private void initData() {
         mData = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            mData.add(new ThemeEntity(i + "", i + "", i + ""));
+        for (int i = 0; i < 10; i++) {
+            mData.add(new ThemeEntity(i + "", i + "", i ));
         }
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Toast.makeText(this,"点击的"+position,Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        intent.putExtra("type", position);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

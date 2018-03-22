@@ -1,5 +1,6 @@
 package com.love.lixinxin.lovenote.adapter;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -23,6 +24,20 @@ public class ThemeListAdapter extends BaseQuickAdapter<ThemeEntity, BaseViewHold
     @Override
     protected void convert(BaseViewHolder helper, ThemeEntity themeEntity) {
             helper.setText(R.id.tv_title,themeEntity.getTitle());
-            helper.setBackgroundRes(R.id.fl_theme,R.mipmap.bg_1);
+
+            String bgResId="girl"+themeEntity.getId();
+
+            if (getResource(bgResId,mContext)>0){
+                helper.setBackgroundRes(R.id.fl_theme,getResource(bgResId,mContext));
+            }else {
+                helper.setBackgroundRes(R.id.fl_theme,R.mipmap.girl0);
+            }
+
+
+    }
+
+    public int getResource(String imageName, Context context) {
+        int resId = context.getResources().getIdentifier(imageName, "mipmap", context.getPackageName());
+        return resId;
     }
 }

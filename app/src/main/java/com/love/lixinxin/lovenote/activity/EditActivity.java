@@ -61,6 +61,8 @@ public class EditActivity extends BaseActivity {
 
     private Note mNote;
 
+    private int bgType = 0;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_edit;
@@ -89,6 +91,11 @@ public class EditActivity extends BaseActivity {
             mEditText.setSelection(mNote.getText().length());
         }
 
+        bgType = mNote.getBgType();
+        if (bgType > 0) {
+            String bgResId = "girl" + bgType;
+            llRoot.setBackgroundResource(getResource(bgResId));
+        }
 
         tvTime.setText(DateTimeUtils.timeForDate(mNote.getCreateTime(), DateTimeUtils.yyyy_Nian_MM_Yue_dd_Ri));
 
@@ -151,8 +158,8 @@ public class EditActivity extends BaseActivity {
     }
 
     private void selectTheme() {
-        ThemeDialogFragment themeDialogFragment=new ThemeDialogFragment();
-        themeDialogFragment.show(getSupportFragmentManager(),"lee");
+        ThemeDialogFragment themeDialogFragment = new ThemeDialogFragment();
+        themeDialogFragment.show(getSupportFragmentManager(), "lee");
     }
 
 
@@ -160,10 +167,12 @@ public class EditActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == THEME_REQUEST_CODE) {
+            bgType = data.getIntExtra("type", 0);
 
+            String bgResId = "girl" + bgType;
+            llRoot.setBackgroundResource(getResource(bgResId));
+            update();
         }
-
-
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -186,6 +195,46 @@ public class EditActivity extends BaseActivity {
     /**
      * 保存
      */
+    private void update() {
+
+        if (mEditText.getText().length() == 0) {
+            return;
+        }
+
+        Flowable
+                .create((FlowableOnSubscribe<Note>) e -> {
+                    Date date = new Date();
+                    mNote.setBgType(bgType);
+                    mNote.setUpdateTime(date.getTime());
+                    mNote.setText(mEditText.getText().toString());
+                    App.noteDao.insertNote(mNote);
+                    e.onNext(mNote);
+                    e.onComplete();
+                }, BackpressureStrategy.LATEST)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Note>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        s.request(Integer.MAX_VALUE);
+                    }
+
+                    @Override
+                    public void onNext(Note note) {
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+ /**
+     * 保存
+     */
     private void save() {
 
         if (mEditText.getText().length() == 0) {
@@ -194,8 +243,8 @@ public class EditActivity extends BaseActivity {
 
         Flowable
                 .create((FlowableOnSubscribe<Note>) e -> {
-                    mNote.setBgType(0);
                     Date date = new Date();
+                    mNote.setBgType(bgType);
                     mNote.setUpdateTime(date.getTime());
                     mNote.setText(mEditText.getText().toString());
                     App.noteDao.insertNote(mNote);
@@ -270,6 +319,12 @@ public class EditActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    public int getResource(String imageName) {
+        int resId = getResources().getIdentifier(imageName, "mipmap", getPackageName());
+        return resId;
     }
 
 }

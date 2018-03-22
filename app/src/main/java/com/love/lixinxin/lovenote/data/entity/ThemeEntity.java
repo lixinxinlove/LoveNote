@@ -10,10 +10,10 @@ public class ThemeEntity implements Serializable {
 
     private String title;
     private String type;
-    private String id;
+    private int id;
 
 
-    public ThemeEntity(String title, String type, String id) {
+    public ThemeEntity(String title, String type, int id) {
         this.title = title;
         this.type = type;
         this.id = id;
@@ -35,11 +35,11 @@ public class ThemeEntity implements Serializable {
         this.type = type;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

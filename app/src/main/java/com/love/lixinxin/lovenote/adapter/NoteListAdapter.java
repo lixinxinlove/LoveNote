@@ -1,5 +1,6 @@
 package com.love.lixinxin.lovenote.adapter;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -24,7 +25,18 @@ public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, Note note) {
         helper.setText(R.id.tv_note_item, note.getText());
-        helper.setText(R.id.tv_create_time, DateTimeUtils.timeForDate(note.getCreateTime(),DateTimeUtils.yyyy_MM_dd_HH_mm_ss));
-        helper.setBackgroundRes(R.id.rl_item_view_root ,R.mipmap.bg_1);
+        helper.setText(R.id.tv_create_time, DateTimeUtils.timeForDate(note.getCreateTime(), DateTimeUtils.yyyy_MM_dd_HH_mm_ss));
+
+        if (note.getBgType() > 0) {
+            String bgResId = "girl" + note.getBgType();
+            helper.setBackgroundRes(R.id.rl_item_view_root, getResource(bgResId,mContext));
+        } else {
+            helper.setBackgroundRes(R.id.rl_item_view_root, R.mipmap.girl0);
+        }
+    }
+
+    public int getResource(String imageName, Context context) {
+        int resId = context.getResources().getIdentifier(imageName, "mipmap", context.getPackageName());
+        return resId;
     }
 }

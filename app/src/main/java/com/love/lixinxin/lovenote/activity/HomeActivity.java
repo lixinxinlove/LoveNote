@@ -7,14 +7,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.adapter.NoteListAdapter;
 import com.love.lixinxin.lovenote.app.App;
-import com.love.lixinxin.lovenote.appwidget.MyViewOutlineProvider;
 import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.dialog.ThemeDialogFragment;
 
@@ -32,7 +30,6 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     private static final int ADD_REQUEST_CODE = 0;
     private static final int EDIT_REQUEST_CODE = 1;
 
-    private ImageView ivAdd;
 
     private FloatingActionButton fABAdd;
 
@@ -82,14 +79,11 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     protected void findView() {
         mRecyclerView = findViewById(R.id.rv_home);
         mEmptyView = findViewById(R.id.empty_view);
-        ivAdd = findViewById(R.id.iv_add);
         fABAdd=findViewById(R.id.fab_add);
-        ivAdd.setOutlineProvider(new MyViewOutlineProvider());
     }
 
     @Override
     protected void setListener() {
-        ivAdd.setOnClickListener(this);
         fABAdd.setOnClickListener(this);
     }
 
@@ -97,10 +91,6 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.iv_add:
-                Intent intent = new Intent(this, EditActivity.class);
-                startActivityForResult(intent, ADD_REQUEST_CODE);
-                break;
             case R.id.fab_add:
                 Intent intent1 = new Intent(this, EditActivity.class);
                 startActivityForResult(intent1, ADD_REQUEST_CODE);
