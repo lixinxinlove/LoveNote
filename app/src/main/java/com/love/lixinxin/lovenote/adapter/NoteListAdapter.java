@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.utils.DateTimeUtils;
+import com.love.lixinxin.lovenote.utils.ImageUtils;
 
 import java.util.List;
 
@@ -29,9 +30,9 @@ public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
 
         if (note.getBgType() > 0) {
             String bgResId = "girl" + note.getBgType();
-            helper.setBackgroundRes(R.id.rl_item_view_root, getResource(bgResId,mContext));
+            ImageUtils.loadImageBlur(mContext, helper.getView(R.id.image_bg), getResource(bgResId, mContext));
         } else {
-            helper.setBackgroundRes(R.id.rl_item_view_root, R.mipmap.girl0);
+            helper.setImageResource(R.id.image_bg, R.mipmap.girl0);
         }
     }
 
