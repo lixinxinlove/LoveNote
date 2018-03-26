@@ -2,6 +2,7 @@ package com.love.lixinxin.lovenote.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -34,6 +35,13 @@ public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
         } else {
             helper.setImageResource(R.id.image_bg, R.mipmap.girl0);
         }
+
+
+
+        ViewGroup.LayoutParams layoutParams = helper.itemView.getLayoutParams();
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        helper.itemView.setLayoutParams(layoutParams);
+
     }
 
     public int getResource(String imageName, Context context) {

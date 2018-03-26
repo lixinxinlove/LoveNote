@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_root"
     android:alpha="0.8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/girl0"
     android:orientation="vertical">
+
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/image_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
     <RelativeLayout
         android:id="@+id/top_bar"
@@ -151,4 +159,4 @@
     </RelativeLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

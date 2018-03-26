@@ -7,7 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.love.lixinxin.lovenote.R;
@@ -18,6 +18,7 @@ import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.dialog.ThemeDialogFragment;
 import com.love.lixinxin.lovenote.manager.NoteManger;
 import com.love.lixinxin.lovenote.utils.DateTimeUtils;
+import com.love.lixinxin.lovenote.utils.ImageUtils;
 import com.love.lixinxin.lovenote.utils.StringUtils;
 
 import org.reactivestreams.Subscriber;
@@ -35,7 +36,7 @@ public class EditActivity extends BaseActivity {
 
     private static final int THEME_REQUEST_CODE = 1;
 
-    private LinearLayout llRoot;
+    private ImageView imageViewBg;
 
     private TextView tvTime;
 
@@ -94,16 +95,16 @@ public class EditActivity extends BaseActivity {
         bgType = mNote.getBgType();
         if (bgType > 0) {
             String bgResId = "girl" + bgType;
-            llRoot.setBackgroundResource(getResource(bgResId));
+            ImageUtils.loadImageBlur(mContext, imageViewBg, getResource(bgResId));
+        } else {
+            ImageUtils.loadImageBlur(mContext, imageViewBg, R.mipmap.girl0);
         }
-
         tvTime.setText(DateTimeUtils.timeForDate(mNote.getCreateTime(), DateTimeUtils.yyyy_Nian_MM_Yue_dd_Ri));
-
     }
 
     @Override
     protected void findView() {
-        llRoot = findViewById(R.id.ll_root);
+        imageViewBg = findViewById(R.id.image_bg);
         tvTime = findViewById(R.id.tv_time);
         ibBack = findViewById(R.id.ib_back);
         ibDelete = findViewById(R.id.ib_delete);
@@ -170,7 +171,7 @@ public class EditActivity extends BaseActivity {
             bgType = data.getIntExtra("type", 0);
 
             String bgResId = "girl" + bgType;
-            llRoot.setBackgroundResource(getResource(bgResId));
+            ImageUtils.loadImageBlur(mContext, imageViewBg, getResource(bgResId));
             update();
         }
     }
@@ -232,7 +233,8 @@ public class EditActivity extends BaseActivity {
                     }
                 });
     }
- /**
+
+    /**
      * 保存
      */
     private void save() {
