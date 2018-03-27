@@ -1,10 +1,16 @@
 package com.love.lixinxin.lovenote.utils;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -35,6 +41,17 @@ public class ImageUtils {
         RequestOptions options = new RequestOptions();
         options.transform(new BlurTransformation(25));
         Glide.with(context).load(resId).apply(options).into(imageView);
+    }
+
+    public static void loadImageBlurBg(Context context, View view, int resId) {
+        RequestOptions options = new RequestOptions();
+        options.transform(new BlurTransformation(25));
+        Glide.with(context).load(resId).apply(options).into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                view.setBackground(resource);
+            }
+        });
     }
 
 

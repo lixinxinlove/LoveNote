@@ -7,7 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.love.lixinxin.lovenote.R;
@@ -36,7 +36,7 @@ public class EditActivity extends BaseActivity {
 
     private static final int THEME_REQUEST_CODE = 1;
 
-    private ImageView imageViewBg;
+    private RelativeLayout rlRoot;
 
     private TextView tvTime;
 
@@ -95,16 +95,19 @@ public class EditActivity extends BaseActivity {
         bgType = mNote.getBgType();
         if (bgType > 0) {
             String bgResId = "girl" + bgType;
-            ImageUtils.loadImageBlur(mContext, imageViewBg, getResource(bgResId));
+            ImageUtils.loadImageBlurBg(this, rlRoot, getResource(bgResId));
         } else {
-            ImageUtils.loadImageBlur(mContext, imageViewBg, R.mipmap.girl0);
+            ImageUtils.loadImageBlurBg(this, rlRoot, R.mipmap.girl0);
         }
         tvTime.setText(DateTimeUtils.timeForDate(mNote.getCreateTime(), DateTimeUtils.yyyy_Nian_MM_Yue_dd_Ri));
     }
 
     @Override
     protected void findView() {
-        imageViewBg = findViewById(R.id.image_bg);
+
+
+        rlRoot = findViewById(R.id.rl_root);
+
         tvTime = findViewById(R.id.tv_time);
         ibBack = findViewById(R.id.ib_back);
         ibDelete = findViewById(R.id.ib_delete);
@@ -171,7 +174,7 @@ public class EditActivity extends BaseActivity {
             bgType = data.getIntExtra("type", 0);
 
             String bgResId = "girl" + bgType;
-            ImageUtils.loadImageBlur(mContext, imageViewBg, getResource(bgResId));
+            //  ImageUtils.loadImageBlur(mContext, imageViewBg, getResource(bgResId));
             update();
         }
     }
