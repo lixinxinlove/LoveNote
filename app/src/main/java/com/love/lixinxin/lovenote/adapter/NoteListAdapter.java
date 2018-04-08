@@ -31,12 +31,10 @@ public class NoteListAdapter extends BaseQuickAdapter<Note, BaseViewHolder> {
 
         if (note.getBgType() > 0) {
             String bgResId = "girl" + note.getBgType();
-            ImageUtils.loadImageBlur(mContext, helper.getView(R.id.image_bg), getResource(bgResId, mContext));
+            ImageUtils.loadImageBlurBg(mContext, helper.getView(R.id.ll_root), getResource(bgResId, mContext));
         } else {
-            helper.setImageResource(R.id.image_bg, R.mipmap.girl0);
+            ImageUtils.loadImageBlurBg(mContext, helper.getView(R.id.ll_root), R.mipmap.girl0);
         }
-
-
 
         ViewGroup.LayoutParams layoutParams = helper.itemView.getLayoutParams();
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
