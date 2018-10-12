@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.love.lixinxin.lovenote.R;
@@ -19,9 +20,9 @@ import com.love.lixinxin.lovenote.dialog.ThemeDialogFragment;
 import java.io.Serializable;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.MaybeObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -42,7 +43,6 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     private RelativeLayout mEmptyView;
 
 
-
     private ThemeDialogFragment themeDialogFragment;
 
     @Override
@@ -54,7 +54,7 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-     //   mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //   mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -80,7 +80,7 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
     protected void findView() {
         mRecyclerView = findViewById(R.id.rv_home);
         mEmptyView = findViewById(R.id.empty_view);
-        fABAdd=findViewById(R.id.fab_add);
+        fABAdd = findViewById(R.id.fab_add);
     }
 
     @Override
@@ -114,23 +114,56 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
 
     private void query() {
 
-        Observable
-                .create((ObservableOnSubscribe<List<Note>>) e -> {
-                    e.onNext(App.db.noteDao().query());
-                    e.onComplete();
-                })
-                .subscribeOn(Schedulers.io())
+
+        App.db.noteDao().query().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                    mData = o;
-                    mAdapter.replaceData(mData);
-                    mAdapter.notifyDataSetChanged();
-                    if (mData == null || mData.size() == 0) {
-                        mEmptyView.setVisibility(View.VISIBLE);
-                    } else {
-                        mEmptyView.setVisibility(View.GONE);
+                .subscribe(new MaybeObserver<List<Note>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<Note> notes) {
+                        mData = notes;
+                        mAdapter.replaceData(mData);
+                        mAdapter.notifyDataSetChanged();
+                        if (mData == null || mData.size() == 0) {
+                            mEmptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            mEmptyView.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(mContext, "没有数据", Toast.LENGTH_LONG).show();
                     }
                 });
+
+
+//        Observable
+//                .create((ObservableOnSubscribe<List<Note>>) e -> {
+//                    e.onNext(App.db.noteDao().query());
+//                    e.onComplete();
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(o -> {
+//                    mData = o;
+//                    mAdapter.replaceData(mData);
+//                    mAdapter.notifyDataSetChanged();
+//                    if (mData == null || mData.size() == 0) {
+//                        mEmptyView.setVisibility(View.VISIBLE);
+//                    } else {
+//                        mEmptyView.setVisibility(View.GONE);
+//                    }
+//                });
     }
 
     @Override

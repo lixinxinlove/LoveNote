@@ -11,11 +11,16 @@ import com.love.lixinxin.lovenote.data.entity.Note;
 
 import java.util.List;
 
+import io.reactivex.Maybe;
+
 /**
  * Created by lixinxin on 2018/1/7.
  */
 @Dao
 public interface NoteDao {
+
+    //Rooom 使用Maybe、Single、Flowable
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(Note... notes);
@@ -27,10 +32,10 @@ public interface NoteDao {
     int updateNote(Note... notes);
 
     @Query("SELECT * FROM note")
-    List<Note> query();
+    Maybe<List<Note>> query();
 
     @Query("SELECT * FROM note WHERE id = :id")
-    List<Note>  queryId(int id);
+    List<Note> queryId(int id);
 
 
 }
