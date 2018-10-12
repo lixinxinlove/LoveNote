@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.love.lixinxin.lovenote.R;
@@ -16,13 +15,13 @@ import com.love.lixinxin.lovenote.adapter.NoteListAdapter;
 import com.love.lixinxin.lovenote.app.App;
 import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.dialog.ThemeDialogFragment;
+import com.love.lixinxin.lovenote.rx.BaseMaybeObserver;
 
 import java.io.Serializable;
 import java.util.List;
 
-import io.reactivex.MaybeObserver;
+import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -112,19 +111,20 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         }
     }
 
+
+    private <T> Maybe<T> sigle(Maybe<T> maybe) {
+        return maybe.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
     private void query() {
 
 
-        App.db.noteDao().query().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MaybeObserver<List<Note>>() {
+        sigle(App.db.noteDao().query())
+                .subscribe(new BaseMaybeObserver<List<Note>>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(List<Note> notes) {
+                    public void success(List<Note> notes) {
                         mData = notes;
                         mAdapter.replaceData(mData);
                         mAdapter.notifyDataSetChanged();
@@ -136,34 +136,11 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void error() {
 
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Toast.makeText(mContext, "没有数据", Toast.LENGTH_LONG).show();
                     }
                 });
 
-
-//        Observable
-//                .create((ObservableOnSubscribe<List<Note>>) e -> {
-//                    e.onNext(App.db.noteDao().query());
-//                    e.onComplete();
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(o -> {
-//                    mData = o;
-//                    mAdapter.replaceData(mData);
-//                    mAdapter.notifyDataSetChanged();
-//                    if (mData == null || mData.size() == 0) {
-//                        mEmptyView.setVisibility(View.VISIBLE);
-//                    } else {
-//                        mEmptyView.setVisibility(View.GONE);
-//                    }
-//                });
     }
 
     @Override
