@@ -1,7 +1,7 @@
 package com.love.lixinxin.lovenote.app;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 
 import com.love.lixinxin.lovenote.data.dao.NoteDao;
 import com.love.lixinxin.lovenote.db.AppDataBase;
