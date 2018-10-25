@@ -3,6 +3,11 @@ package com.love.lixinxin.lovenote.rx;
 import io.reactivex.MaybeObserver;
 import io.reactivex.disposables.Disposable;
 
+
+/**
+ * 封装 观察者
+ * @param <T>
+ */
 public abstract class BaseMaybeObserver<T> implements MaybeObserver<T> {
 
 
