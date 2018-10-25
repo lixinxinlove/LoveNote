@@ -1,7 +1,6 @@
 package com.love.lixinxin.lovenote.adapter;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -12,6 +11,8 @@ import com.love.lixinxin.lovenote.utils.DateTimeUtils;
 import com.love.lixinxin.lovenote.utils.ImageUtils;
 
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by lixinxin on 2018/1/8.

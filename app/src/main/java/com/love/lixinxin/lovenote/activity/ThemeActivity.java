@@ -3,8 +3,6 @@ package com.love.lixinxin.lovenote.activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -16,6 +14,9 @@ import com.love.lixinxin.lovenote.data.entity.ThemeEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class ThemeActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
 
     private ImageButton ibBack;
@@ -25,6 +26,8 @@ public class ThemeActivity extends BaseActivity implements BaseQuickAdapter.OnIt
     private ThemeListAdapter mAdapter;
 
     private List<ThemeEntity> mData;
+
+    boolean f=false;
 
     @Override
     protected int getLayoutRes() {
