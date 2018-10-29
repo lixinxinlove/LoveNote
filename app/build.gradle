@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.love.lixinxin.lovenote"
@@ -22,6 +23,7 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
 
 
     lintOptions {
@@ -48,6 +50,7 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.release
         }
+        
     }
 
 
