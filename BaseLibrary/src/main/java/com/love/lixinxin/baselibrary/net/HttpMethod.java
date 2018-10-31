@@ -1,8 +1,5 @@
 package com.love.lixinxin.baselibrary.net;
 
-/**
- * Created by 傅令杰 on 2017/4/2
- */
 
 enum HttpMethod {
     GET,

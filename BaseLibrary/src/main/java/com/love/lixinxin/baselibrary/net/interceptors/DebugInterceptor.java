@@ -12,9 +12,6 @@ import okhttp3.Protocol;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-/**
- * Created by 傅令杰 on 2017/4/11
- */
 
 public class DebugInterceptor extends BaseInterceptor {
 
