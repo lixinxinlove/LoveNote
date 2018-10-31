@@ -174,7 +174,8 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
 
                     }
                 })
-                .success(response -> Log.e("note", response))
+                .success(response ->
+                        Log.e("note", response))
                 .failure(() -> Log.e("note", "onFailure"))
                 .error((code, msg) -> Log.e("note", msg))
                 .build()
