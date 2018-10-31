@@ -3,13 +3,14 @@ package com.love.lixinxin.lovenote.activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.love.lixinxin.baselibrary.net.RestClient;
+import com.love.lixinxin.baselibrary.net.callback.IRequest;
 import com.love.lixinxin.lovenote.R;
 import com.love.lixinxin.lovenote.adapter.NoteListAdapter;
 import com.love.lixinxin.lovenote.app.App;
@@ -19,7 +20,11 @@ import com.love.lixinxin.lovenote.rx.BaseMaybeObserver;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -72,6 +77,10 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         query();
+
+
+        login("/api/xiandu/categories");
+
     }
 
 
@@ -149,4 +158,28 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
         intent.putExtra("note", (Serializable) adapter.getItem(position));
         startActivityForResult(intent, EDIT_REQUEST_CODE);
     }
+
+
+    private void login(String url) {
+        Map<String, Object> params = new WeakHashMap<>();
+        RestClient.builder().params((WeakHashMap<String, Object>) params).url(url)
+                .onRequest(new IRequest() {
+                    @Override
+                    public void onRequestStart() {
+
+                    }
+
+                    @Override
+                    public void onRequestEnd() {
+
+                    }
+                })
+                .success(response -> Log.e("note", response))
+                .failure(() -> Log.e("note", "onFailure"))
+                .error((code, msg) -> Log.e("note", msg))
+                .build()
+                .get();
+    }
+
+
 }
