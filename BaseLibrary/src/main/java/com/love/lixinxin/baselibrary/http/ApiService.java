@@ -1,7 +1,6 @@
 package com.love.lixinxin.baselibrary.http;
 
-import android.database.Observable;
-
+import io.reactivex.Flowable;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -11,6 +10,6 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST
-    Observable<String> login(@Url String url, @Query("userName") String userName, @Query("password") String password);
+    Flowable<String> login(@Url String url, @Query("userName") String userName, @Query("password") String password);
 
 }

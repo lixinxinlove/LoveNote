@@ -17,7 +17,9 @@ public class RetrofitClient {
      * 构建全局Retrofit客户端
      */
     private static final class RetrofitHolder {
+
         private static final String BASE_URL = Config.API_HOST;
+
         private static final Retrofit RETROFIT_CLIENT = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(OKHttpHolder.OK_HTTP_CLIENT)
@@ -31,8 +33,11 @@ public class RetrofitClient {
      * 构建OkHttp
      */
     private static final class OKHttpHolder {
+
         private static final int TIME_OUT = 60;
+
         private static final OkHttpClient.Builder BUILDER = new OkHttpClient.Builder();
+
         private static final ArrayList<Interceptor> INTERCEPTORS = null;//= Latte.getConfiguration(ConfigKeys.INTERCEPTOR);
 
         private static OkHttpClient.Builder addInterceptor() {
@@ -46,6 +51,7 @@ public class RetrofitClient {
 
         private static final OkHttpClient OK_HTTP_CLIENT = addInterceptor()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .build();
     }
 
@@ -53,13 +59,12 @@ public class RetrofitClient {
     /**
      * Service接口
      */
-    private static final class RestServiceHolder {
-        private static final ApiService REST_SERVICE = RetrofitHolder.RETROFIT_CLIENT.create(ApiService.class);
+    private static final class ApiServiceHolder {
+        private static final ApiService API_SERVICE = RetrofitHolder.RETROFIT_CLIENT.create(ApiService.class);
     }
 
-    public static ApiService getRestService() {
-        return RestServiceHolder.REST_SERVICE;
+    public static ApiService getApiService() {
+        return ApiServiceHolder.API_SERVICE;
     }
-
 
 }

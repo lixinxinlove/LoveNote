@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.love.lixinxin.baselibrary.http.RetrofitClient;
 import com.love.lixinxin.baselibrary.net.RestClient;
 import com.love.lixinxin.baselibrary.net.callback.IRequest;
 import com.love.lixinxin.lovenote.R;
@@ -17,6 +18,9 @@ import com.love.lixinxin.lovenote.app.App;
 import com.love.lixinxin.lovenote.data.entity.Note;
 import com.love.lixinxin.lovenote.dialog.ThemeDialogFragment;
 import com.love.lixinxin.lovenote.rx.BaseMaybeObserver;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.io.Serializable;
 import java.util.List;
@@ -161,6 +165,33 @@ public class HomeActivity extends BaseActivity implements BaseQuickAdapter.OnIte
 
 
     private void login(String url) {
+
+        RetrofitClient.getApiService().login("", "", "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
         Map<String, Object> params = new WeakHashMap<>();
         RestClient.builder().params((WeakHashMap<String, Object>) params).url(url)
                 .onRequest(new IRequest() {
